@@ -6,10 +6,9 @@ import { AddIcon } from "@chakra-ui/icons";
 import ChatLoading from "./ChatLoading";
 import { getSender } from "../config/chatLogic";
 import GroupChatModal from "./misc/GroupChatModal";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const MyChats = ({ fetchAgain }) => {
-  const [loggedUser, setLoggedUser] = useState();
+  const [loggedUser, setLoggedUser] = useState("");
   const { selectedChat, setSelectedChat, user, chats, setChats } = ChatState();
 
   const toast = useToast();
@@ -38,6 +37,7 @@ const MyChats = ({ fetchAgain }) => {
   };
 
   useEffect(() => {
+    og("useeffect====>mychat");
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
   }, [fetchAgain]);
@@ -113,4 +113,4 @@ const MyChats = ({ fetchAgain }) => {
   );
 };
 
-export default withRouter(MyChats);
+export default MyChats;

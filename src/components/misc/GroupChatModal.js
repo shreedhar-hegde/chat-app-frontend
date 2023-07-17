@@ -18,7 +18,6 @@ import React, { useState } from "react";
 import { ChatState } from "../context/ChatProvider";
 import UserListItem from "../UserAvatar/UserListItem";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const GroupChatModal = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +46,6 @@ const GroupChatModal = ({ children }) => {
 
       const { data } = await axios.get(`/api/user?search=${search}`, config);
 
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -95,8 +93,6 @@ const GroupChatModal = ({ children }) => {
         config
       );
 
-      console.log("res===>", data);
-
       setChats([data, ...chats]);
       toast({
         title: "Group created",
@@ -107,7 +103,6 @@ const GroupChatModal = ({ children }) => {
       });
       return;
     } catch (error) {
-      console.log("err===>", error);
       toast({
         title: "Error creating group ",
         status: "error",
@@ -168,7 +163,7 @@ const GroupChatModal = ({ children }) => {
             <Box width={"100%"} display={"flex"} flexWrap={"wrap"}>
               {selectedUsers.map((user) => (
                 <UserBadgeItem
-                  key={user.id}
+                  key={user._id}
                   user={user}
                   handleFunction={() => handleDelete(user)}
                 />
@@ -201,4 +196,4 @@ const GroupChatModal = ({ children }) => {
   );
 };
 
-export default withRouter(GroupChatModal);
+export default GroupChatModal;

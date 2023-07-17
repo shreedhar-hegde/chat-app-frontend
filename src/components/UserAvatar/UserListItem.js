@@ -1,6 +1,5 @@
 import React from "react";
 import { Avatar, Box, Text } from "@chakra-ui/react";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const UserListItem = ({ user, handleFunction }) => {
   return (
@@ -36,4 +35,4 @@ const UserListItem = ({ user, handleFunction }) => {
   );
 };
 
-export default withRouter(UserListItem);
+export default UserListItem;

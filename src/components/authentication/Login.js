@@ -10,18 +10,16 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
-import {
-  useHistory,
-  withRouter,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
+
+  const navigate = useNavigate();
 
   const toast = useToast();
 
@@ -52,7 +50,6 @@ const Login = () => {
         { email, password },
         config
       );
-      console.log("lgin res", data);
 
       toast({
         title: "Login successful",
@@ -65,7 +62,7 @@ const Login = () => {
 
       setLoading(false);
       if (data) {
-        history.push("/chats");
+        navigate("/chats");
       }
     } catch (err) {
       toast({
@@ -76,7 +73,6 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-      console.log("login err===>", err);
     }
   };
 
@@ -87,6 +83,7 @@ const Login = () => {
         <Input
           placeholder="Enter Email"
           onChange={(e) => setEmail(e.target.value)}
+          value={email}
         />
       </FormControl>
 
@@ -97,6 +94,7 @@ const Login = () => {
             type={show ? "text" : "password"}
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
+            value={password}
           />
           <InputRightElement width="4.5rem">
             <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -129,4 +127,4 @@ const Login = () => {
   );
 };
 
-export default withRouter(Login);
+export default Login;

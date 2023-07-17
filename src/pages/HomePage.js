@@ -11,15 +11,14 @@ import {
 import React, { useEffect } from "react";
 import Login from "../components/authentication/Login";
 import Signup from "../components/authentication/Signup";
-import { useHistory } from "react-router";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("userInfo"));
-    if (user) history.push("/chats");
-  }, [history]);
+    if (user) navigate("/chats");
+  }, []);
 
   return (
     <Container maxW="xl" centerContent>
@@ -56,4 +55,4 @@ const HomePage = () => {
   );
 };
 
-export default withRouter(HomePage);
+export default HomePage;

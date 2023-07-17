@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import React from "react";
 import { ChatState } from "./context/ChatProvider";
 import SingleChat from "./SingleChat";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   const { selectedChat } = ChatState();
@@ -23,4 +22,4 @@ const ChatBox = ({ fetchAgain, setFetchAgain }) => {
   );
 };
 
-export default withRouter(ChatBox);
+export default ChatBox;

@@ -1,6 +1,5 @@
 import { Skeleton, Stack } from "@chakra-ui/react";
 import React from "react";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const ChatLoading = () => {
   return (
@@ -18,4 +17,4 @@ const ChatLoading = () => {
   );
 };
 
-export default withRouter(ChatLoading);
+export default ChatLoading;

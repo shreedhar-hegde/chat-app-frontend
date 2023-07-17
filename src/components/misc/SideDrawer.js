@@ -17,18 +17,19 @@ import {
   DrawerContent,
   DrawerBody,
   Input,
-  toast,
   useToast,
   Spinner,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ChatState } from "../context/ChatProvider";
 import ProfileModal from "./ProfileModal";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ChatLoading from "../ChatLoading";
 import UserListItem from "../UserAvatar/UserListItem";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
+import { getSender } from "../../config/chatLogic";
+import NotificationBadge from "react-notification-badge/lib/components/NotificationBadge";
+import { Effect } from "react-notification-badge";
 
 function SideDrawer() {
   const [search, setSearch] = useState("");
@@ -38,19 +39,25 @@ function SideDrawer() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const { user, setSelectedChat, chats, setChats } = ChatState();
+  const {
+    user,
+    setSelectedChat,
+    chats,
+    setChats,
+    notification,
+    setNotification,
+  } = ChatState();
 
   const logoutHandler = () => {
     localStorage.removeItem("userInfo");
-    history.push("/");
+    navigate("/");
   };
 
   const toast = useToast();
 
   const handleSearch = async () => {
-    console.log("hanlde search");
     if (!search) {
       toast({
         title: "Search cannot be empty",
@@ -73,8 +80,6 @@ function SideDrawer() {
 
       setLoading(false);
       setSearchResult(data);
-
-      console.log("data", data);
     } catch (error) {
       toast({
         title: "Error occurred",
@@ -142,9 +147,30 @@ function SideDrawer() {
         <div>
           <Menu>
             <MenuButton p={1}>
+              <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize="2xl" />
             </MenuButton>
-            <MenuList></MenuList>
+            <MenuList pl={2}>
+              {!notification.length && "No new messages"}
+              {notification.map((notif) => {
+                return (
+                  <MenuItem
+                    key={notif._id}
+                    onClick={() => {
+                      setSelectedChat(notif.chat);
+                      setNotification(notification.filter((n) => n !== notif));
+                    }}
+                  >
+                    {notif.chat.isGroupChat
+                      ? `New message in ${notif.chat.chatName}`
+                      : `New message form ${getSender(user, notif.chat.users)}`}
+                  </MenuItem>
+                );
+              })}
+            </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} rightIcon={<ChevronRightIcon />}>
@@ -200,4 +226,4 @@ function SideDrawer() {
   );
 }
 
-export default withRouter(SideDrawer);
+export default SideDrawer;

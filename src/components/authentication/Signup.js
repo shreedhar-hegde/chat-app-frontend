@@ -10,10 +10,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useState } from "react";
-import {
-  useHistory,
-  withRouter,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const [name, setName] = useState();
@@ -26,8 +23,7 @@ const Signup = () => {
 
   const handleClick = () => setShow(!show);
   const toast = useToast();
-  const history = useHistory();
-
+  const navigate = useNavigate();
   const postDetails = (pic) => {
     setLoading(true);
     if (pic === undefined) {
@@ -53,11 +49,9 @@ const Signup = () => {
         .then((res) => res.json())
         .then((data) => {
           setPic(data.url.toString());
-          console.log(data.url.toString());
           setLoading(false);
         })
         .catch((err) => {
-          console.log("err", err);
           setLoading(false);
         });
     } else {
@@ -113,8 +107,6 @@ const Signup = () => {
         config
       );
 
-      console.log("data===>", data);
-
       toast({
         title: "Sing Up successful",
         status: "success",
@@ -125,7 +117,7 @@ const Signup = () => {
       localStorage.setItem("userInfo", JSON.stringify(data));
 
       setLoading(false);
-      history.push("/chats");
+      navigate("/chats");
     } catch (err) {
       toast({
         title: "Sing Up failed",
@@ -135,7 +127,6 @@ const Signup = () => {
         isClosable: true,
         position: "bottom",
       });
-      console.log("err", err);
     }
   };
 
@@ -213,4 +204,4 @@ const Signup = () => {
   );
 };
 
-export default withRouter(Signup);
+export default Signup;

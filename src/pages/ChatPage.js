@@ -4,7 +4,6 @@ import MyChats from "../components/MyChats";
 import ChatBox from "../components/ChatBox";
 import { ChatState } from "../components/context/ChatProvider.js";
 import { useState } from "react";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const ChatPage = () => {
   const { user } = ChatState();
@@ -29,4 +28,4 @@ const ChatPage = () => {
   );
 };
 
-export default withRouter(ChatPage);
+export default ChatPage;

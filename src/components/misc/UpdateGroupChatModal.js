@@ -64,14 +64,11 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         config
       );
 
-      console.log("data====>", data);
-
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
-      //   fetchMessages();
+      fetchMessages();
       setLoading(false);
     } catch (error) {
-      console.log("error", error);
       toast({
         title: "Error Occurred!",
         description: error.response,
@@ -86,7 +83,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
   };
 
   const handleAddUser = async (user1) => {
-    console.log("selected chat", selectedChat);
     if (selectedChat.users.find((u) => u._id === user1._id)) {
       toast({
         title: "User Already in group!",
@@ -203,7 +199,6 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
         },
       };
       const { data } = await axios.get(`/api/user?search=${search}`, config);
-      console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -244,7 +239,7 @@ const UpdateGroupChatModal = ({ fetchMessages, fetchAgain, setFetchAgain }) => {
               <Box w="100%" display="flex" flexWrap="wrap" pb={3}>
                 {selectedChat.users.map((user) => (
                   <UserBadgeItem
-                    key={user.id}
+                    key={user._id}
                     user={user}
                     handleFunction={() => handleDelete(user)}
                   />

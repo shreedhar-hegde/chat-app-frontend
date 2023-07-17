@@ -14,10 +14,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
-import { withRouter } from "react-router-dom/cjs/react-router-dom.min";
 
 const ProfileModal = ({ user, children }) => {
-  console.log("user", user);
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -74,4 +72,4 @@ const ProfileModal = ({ user, children }) => {
   );
 };
 
-export default withRouter(ProfileModal);
+export default ProfileModal;
