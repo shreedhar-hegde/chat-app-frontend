@@ -40,25 +40,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const toast = useToast();
 
-  useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
-    socket.on("typing", (room, userSocket) => {
-      if (user._id !== userSocket) setIsTyping(true);
-    });
-    socket.on("stop typing", () => setTyping(false));
-  }, []);
-
-  const defaultOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
   const fetchMessages = async () => {
     if (!selectedChat) return;
     try {
@@ -89,27 +70,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  useEffect(() => {
-    fetchMessages();
-    selectedChatCompare = selectedChat;
-  }, [selectedChat]);
-
-  useEffect(() => {
-    socket.on("message received", (newMessage) => {
-      if (
-        !selectedChatCompare ||
-        selectedChatCompare._id !== newMessage.chat._id
-      ) {
-        if (!notification.includes(newMessage)) {
-          setNotification([newMessage, ...notification]);
-          setFetchAgain(!fetchAgain);
-        }
-      } else {
-        setMessages([...messages, newMessage]);
-      }
-    });
-  }, []);
-
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       socket.emit("stop typing", selectedChat._id);
@@ -132,7 +92,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         );
 
         socket.emit("new message", data);
-
         setMessages([...messages, data]);
       } catch (error) {
         toast({
@@ -147,6 +106,46 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
+
+  useEffect(() => {
+    socket = io(ENDPOINT);
+    socket.emit("setup", user);
+    socket.on("connected", () => setSocketConnected(true));
+    socket.on("typing", (room, userSocket) => {
+      if (user._id !== userSocket) setIsTyping(true);
+    });
+    socket.on("stop typing", () => setTyping(false));
+  }, []);
+
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
+
+  useEffect(() => {
+    fetchMessages();
+    selectedChatCompare = selectedChat;
+  }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message received", (newMessage) => {
+      if (
+        !selectedChatCompare ||
+        selectedChatCompare._id !== newMessage.chat._id
+      ) {
+        if (!notification.includes(newMessage)) {
+          setNotification([newMessage, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
+      } else {
+        setMessages([...messages, newMessage]);
+      }
+    });
+  }, []);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);

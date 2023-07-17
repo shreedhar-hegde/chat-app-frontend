@@ -58,11 +58,11 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      await localStorage.setItem("userInfo", JSON.stringify(data));
 
       setLoading(false);
       if (data) {
-        navigate("/chats");
+        await navigate("/chats");
       }
     } catch (err) {
       toast({
