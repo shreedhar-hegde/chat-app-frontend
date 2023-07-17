@@ -10,8 +10,6 @@ const ChatProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    og("useeffect===>chatprovider");
-
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
 

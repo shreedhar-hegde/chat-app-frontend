@@ -41,7 +41,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast();
 
   useEffect(() => {
-    og("useeffect====>,singlechat");
     socket = io(ENDPOINT);
     socket.emit("setup", user);
     socket.on("connected", () => setSocketConnected(true));
@@ -91,14 +90,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   useEffect(() => {
-    og("useeffect===>singlechat3");
-
     fetchMessages();
     selectedChatCompare = selectedChat;
   }, [selectedChat]);
 
   useEffect(() => {
-    og("useeffect===>singlechat2");
     socket.on("message received", (newMessage) => {
       if (
         !selectedChatCompare ||
