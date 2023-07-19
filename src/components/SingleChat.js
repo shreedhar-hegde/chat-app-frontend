@@ -145,7 +145,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         setMessages([...messages, newMessage]);
       }
     });
-  }, []);
+  }, [fetchMessages]);
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
